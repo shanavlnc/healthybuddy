@@ -1,20 +1,36 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { ActivityIndicator, View } from 'react-native';
+import AppLoading from 'expo-app-loading';
+import * as Font from 'expo-font';
+import { AuthProvider } from './src/context/AuthContext';
+import AppNavigation from './src/navigation/AppNavigation';
+import { UserProvider } from './src/context/UserContext';
+
+const loadFonts = () => {
+  return Font.loadAsync({
+    'open-sans': require('./assets/fonts/OpenSans-Regular.ttf'),
+    'open-sans-bold': require('./assets/fonts/OpenSans-Bold.ttf'),
+  });
+};
 
 export default function App() {
+  const [fontsLoaded, setFontsLoaded] = useState(false);
+
+  if (!fontsLoaded) {
+    return (
+      <AppLoading
+        startAsync={loadFonts}
+        onFinish={() => setFontsLoaded(true)}
+        onError={console.warn}
+      />
+    );
+  }
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <AuthProvider>
+      <UserProvider>
+        <AppNavigation />
+      </UserProvider>
+    </AuthProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
