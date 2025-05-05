@@ -1,28 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import { ActivityIndicator, View } from 'react-native';
-import AppLoading from 'expo-app-loading';
 import * as Font from 'expo-font';
 import { AuthProvider } from './src/context/AuthContext';
-import AppNavigation from './src/navigation/AppNavigation';
 import { UserProvider } from './src/context/UserContext';
-
-const loadFonts = () => {
-  return Font.loadAsync({
-    'open-sans': require('./assets/fonts/OpenSans-Regular.ttf'),
-    'open-sans-bold': require('./assets/fonts/OpenSans-Bold.ttf'),
-  });
-};
+import AppNavigation from './src/navigation/AppNavigation';
 
 export default function App() {
-  const [fontsLoaded, setFontsLoaded] = useState(false);
+  const [appIsReady, setAppIsReady] = useState(false);
 
-  if (!fontsLoaded) {
+  useEffect(() => {
+    async function loadResources() {
+      try {
+        await Font.loadAsync({
+          'open-sans': require('./assets/fonts/OpenSans-Regular.ttf'),
+          'open-sans-bold': require('./assets/fonts/OpenSans-Bold.ttf'),
+        });
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        setAppIsReady(true);
+      }
+    }
+
+    loadResources();
+  }, []);
+
+  if (!appIsReady) {
     return (
-      <AppLoading
-        startAsync={loadFonts}
-        onFinish={() => setFontsLoaded(true)}
-        onError={console.warn}
-      />
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" />
+      </View>
     );
   }
 
