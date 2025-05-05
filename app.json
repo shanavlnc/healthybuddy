@@ -12,21 +12,53 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "UIAppFonts": [
+          "OpenSans-Regular.ttf",
+          "OpenSans-Bold.ttf"
+        ]
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "fonts": [
+        {
+          "font": "./assets/fonts/OpenSans-Regular.ttf",
+          "weight": "400"
+        },
+        {
+          "font": "./assets/fonts/OpenSans-Bold.ttf",
+          "weight": "700"
+        }
+      ]
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/favicon.png",
+      "build": {
+        "babel": {
+          "include": ["@expo/vector-icons"]
+        }
+      }
     },
     "plugins": [
-      "expo-font"
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "./assets/fonts/OpenSans-Regular.ttf",
+            "./assets/fonts/OpenSans-Bold.ttf"
+          ]
+        }
+      ]
     ]
   }
 }
